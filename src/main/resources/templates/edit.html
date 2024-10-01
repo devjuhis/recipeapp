@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recipe Manager</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <main>
+        <form id="recipeform" class="recipeform" th:object="${recipe}" action="/save" method="post">
+            <h2>Edit recipe</h2>
+
+            <input type="hidden" th:field="*{id}" />
+
+            <label for="title">Recipe Title:</label>
+            <input type="text" id="title" name="title" placeholder="Title of Your Delicious Creation" th:field="*{title}" required />
+            
+            <label for="ingredients">Ingredients:</label>
+            <textarea id="ingredients" cols="3" rows="5" name="ingredients" placeholder="Throw in the Secret Ingredients!" th:field="*{ingredients}" required></textarea>
+            
+            <label for="instructions">Instructions:</label>
+            <textarea id="instructions" cols="2" rows="4" name="instructions" placeholder="Step-by-Step to Deliciousness" th:field="*{instructions}" required></textarea>
+            
+            <button type="submit">
+                <div class="slide">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-receipt">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2" />
+                    </svg>
+                    Save Me!
+                </div>
+                <p>Save edit</p>
+            </button>
+        </form>
+    </main>
+</body>
+</html>

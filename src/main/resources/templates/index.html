@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recipe Manager</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <main>
+        <h1>Recipe Manager</h1>
+        <p th:text="'Welcome ' + ${username} + '!'"></p>
+
+        <section id="search">
+            <form action="/recipes" method="get">
+                <input type="text" name="query" placeholder="Search for recipes" required />
+                <button id="searchButton" type="submit">
+                    <div class="slide">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                    </div>
+                    <p>Search</p>
+                </button>
+            </form>
+    
+            <div id="resultContainer" class="results">
+                <div class="result" th:each="recipe : ${apirecipes}">
+                    <div id="closeRecipe" class="close">Close</div>
+                    <h3 th:text="${recipe.strMeal}">Recipe Name</h3>
+                    <img th:if="${recipe.strMealThumb}" th:src="${recipe.strMealThumb}" alt="Recipe Image" width="200" />
+                    <div class="recipe-details">
+                        <div class="detail">
+                            <span>Instructions</span>
+                            <p th:text="${recipe.strInstructions}"></p>
+                        </div>
+
+                        <div class="detail">
+                            <span>Category</span>
+                            <p th:text="${recipe.strCategory}"></p>
+                        </div>
+
+                        <div class="detail">
+                            <span>Area</span>
+                            <p th:text="${recipe.strArea}"></p>
+                        </div>
+                        
+                    </div>
+
+                    <a target="_blank" th:href="@{|https://www.google.com/search?q=${recipe.strMeal}|}" class="search-recipe">Search recipe online</a>
+
+                </div>
+            </div>
+        </section>
+
+        <a class="logout" href="/logout">
+            Logout
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-logout">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                <path d="M9 12h12l-3 -3" />
+                <path d="M18 15l3 -3" />
+            </svg>
+        </a>
+        
+        <form id="recipeform" class="recipeform" action="/save" method="post">
+            <h2>Add recipe</h2>
+            <label for="title">Recipe Title:</label>
+            <input type="text" id="title" name="title" placeholder="Title of Your Delicious Creation" required />
+            
+            <label for="ingredients">Ingredients:</label>
+            <textarea id="ingredients" cols="3" rows="5" name="ingredients" placeholder="Throw in the Secret Ingredients!" required></textarea>
+            
+            <label for="instructions">Instructions:</label>
+            <textarea id="instructions" cols="2" rows="4" name="instructions" placeholder="Step-by-Step to Deliciousness" required></textarea>
+            
+            <button type="submit">
+                <div class="slide">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-receipt">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2" />
+                    </svg>
+                    Save Me!
+                </div>
+                <p>Add Recipe</p>
+            </button>
+        </form>
+
+        <section id="myrecipes">
+            <h2>My Recipes</h2>
+            <li th:each="recipe : ${recipes}">
+                <h3 th:text="${recipe.title}"></h3>
+                <div class="ingredients">
+                    <span>
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chef-hat"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z" /><path d="M6.161 17.009l11.839 -.009" /></svg>
+                        Ingredients:
+                    </span>
+                    <p th:text="${recipe.ingredients}"></p>
+                </div>
+                <div class="instructions">
+                    <span>
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-list-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3.5 5.5l1.5 1.5l2.5 -2.5" /><path d="M3.5 11.5l1.5 1.5l2.5 -2.5" /><path d="M3.5 17.5l1.5 1.5l2.5 -2.5" /><path d="M11 6l9 0" /><path d="M11 12l9 0" /><path d="M11 18l9 0" /></svg>
+                        Instructions:
+                    </span>
+                    <p th:text="${recipe.instructions}"></p>
+                </div>
+                <div class="options">
+                    <a th:href="@{/delete/{id}(id=${recipe.id})}">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                    </a>
+                    <a class="edit" th:href="@{/edit/{id}(id=${recipe.id})}">
+                        <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="edit icon-tabler icons-tabler-outline icon-tabler-pencil"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>
+                    </a>
+                </div>
+            </li>
+        </section>
+    </main>
+
+    <script src="/js/page.js"></script>>
+</body>
+</html>
